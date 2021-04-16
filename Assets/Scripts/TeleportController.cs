@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class TeleportController : MonoBehaviour
 {
-    //public GameObject teleportationGameObject;
-
     public InputActionReference teleportationActivationReference;
 
     [Space]
