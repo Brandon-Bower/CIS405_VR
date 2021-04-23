@@ -5,15 +5,23 @@ using UnityEngine.Events;
 public class Menu : MonoBehaviour
 {
     public InputActionReference OpenMenu;
-    bool open = false;
-    bool releaseCheck = true;
+    public Transform player;
 
     [Space]
     public UnityEvent menuOpen;
     public UnityEvent menuClose;
 
-    // Start is called before the first frame update
-    private void Start()
+    bool open = false;
+    bool releaseCheck = true;
+
+    // Update is called once per frame
+    void Update()
+    {
+        this.transform.position = player.transform.position;
+        this.transform.rotation = player.transform.rotation;
+    }
+
+    private void OnEnable()
     {
         OpenMenu.action.performed += toggle;
         OpenMenu.action.canceled += buttonReleased;
