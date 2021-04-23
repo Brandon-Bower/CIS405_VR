@@ -19,6 +19,12 @@ public class TeleportController : MonoBehaviour
         teleportationActivationReference.action.canceled += TeleportModeCancel;
     }
 
+    private void OnDisable()
+    {
+        teleportationActivationReference.action.performed -= TeleportModeActivate;
+        teleportationActivationReference.action.canceled -= TeleportModeCancel;
+    }
+
     private void TeleportModeActivate(InputAction.CallbackContext obj) => onTeleportActivate.Invoke();
 
     private void TeleportModeCancel(InputAction.CallbackContext obj) => Invoke("DeactivateTeleporter", .1f);
