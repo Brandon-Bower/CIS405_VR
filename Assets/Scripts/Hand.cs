@@ -35,6 +35,7 @@ public class Hand : MonoBehaviour
     internal void SetGrip(float v)
     {
         gripTarget = v;
+        Debug.Log(gripTarget);
     }
 
     internal void SetTrigger(float v)
