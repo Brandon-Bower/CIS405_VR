@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Code from https://www.youtube.com/watch?v=DxKWq7z4Xao&list=WL&index=19&t=869s
+// Based on code from https://www.youtube.com/watch?v=DxKWq7z4Xao&list=WL&index=19&t=869s
 
 [RequireComponent(typeof(Animator))]
 public class Hand : MonoBehaviour
@@ -11,12 +11,11 @@ public class Hand : MonoBehaviour
     public float speed;
     Animator animator;
     SkinnedMeshRenderer mesh;
-    private float gripTarget;
-    private float triggerTarget;
-    private float gripCurrent;
-    private float triggerCurrent;
+    private float gripTarget, triggerTarget, thumbTarget;
+    private float gripCurrent, triggerCurrent, thumbCurrent;
     private string animatorGripParam = "Grip";
     private string animatorTriggerParam = "Trigger";
+    private string animatorThumbParam = "Thumb";
 
 
     // Start is called before the first frame update
@@ -32,10 +31,14 @@ public class Hand : MonoBehaviour
         AnimateHand();
     }
 
+    internal void SetThumb(float v)
+    {
+        thumbTarget = v;
+    }
+
     internal void SetGrip(float v)
     {
         gripTarget = v;
-        Debug.Log(gripTarget);
     }
 
     internal void SetTrigger(float v)
@@ -54,6 +57,11 @@ public class Hand : MonoBehaviour
         {
             triggerCurrent = Mathf.MoveTowards(triggerCurrent, triggerTarget, Time.deltaTime * speed);
             animator.SetFloat(animatorTriggerParam, triggerCurrent);
+        }
+        if (thumbCurrent != thumbTarget)
+        {
+            thumbCurrent = Mathf.MoveTowards(thumbCurrent, thumbTarget, Time.deltaTime * speed);
+            animator.SetFloat(animatorThumbParam, thumbCurrent);
         }
     }
 

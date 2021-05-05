@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
-// Code from https://www.youtube.com/watch?v=DxKWq7z4Xao&list=WL&index=19&t=869s
+// Based on code from https://www.youtube.com/watch?v=DxKWq7z4Xao&list=WL&index=19&t=869s
 
 [RequireComponent(typeof(ActionBasedController))]
 public class HandController : MonoBehaviour
 {
     ActionBasedController controller;
     public Hand hand;
-   
+    public InputActionReference touchAction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,5 +24,6 @@ public class HandController : MonoBehaviour
     {
         hand.SetGrip(controller.selectAction.action.ReadValue<float>());
         hand.SetTrigger(controller.activateAction.action.ReadValue<float>());
+        hand.SetThumb(touchAction.action.ReadValue<float>());
     }
 }
