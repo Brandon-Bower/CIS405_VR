@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Based on code from https://www.youtube.com/watch?v=DxKWq7z4Xao&list=WL&index=19&t=869s
@@ -27,6 +24,9 @@ public class HandPhysics : MonoBehaviour
     [SerializeField] private Vector3 rotationOffset;
     private Transform _followTarget;
     private Rigidbody _body;
+    private bool moving = false;
+    private bool stoppedMoving = false;
+    private bool teleporting = false;
 
     // Start is called before the first frame update
     void Start()
@@ -51,8 +51,22 @@ public class HandPhysics : MonoBehaviour
     void Update()
     {
         AnimateHand();
+        if (stoppedMoving)
+        {
+            _body.isKinematic = false;
+            _body.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        }
 
-        PhysicsMove();
+        if (!moving && !teleporting)
+            PhysicsMove();
+        else
+        {
+            _body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            _body.isKinematic = true;
+            gameObject.transform.position = _followTarget.position;
+            gameObject.transform.rotation = _followTarget.rotation;
+            stoppedMoving = true;
+        }
     }
 
     private void PhysicsMove()
@@ -69,20 +83,16 @@ public class HandPhysics : MonoBehaviour
         _body.angularVelocity = angle * axis * Mathf.Deg2Rad * rotateSpeed;
     }
 
-    internal void SetThumb(float v)
-    {
-        thumbTarget = v;
-    }
+    internal void SetThumb(float v) => thumbTarget = v;
 
-    internal void SetGrip(float v)
-    {
-        gripTarget = v;
-    }
+    internal void SetGrip(float v) => gripTarget = v;
 
-    internal void SetTrigger(float v)
-    {
-        triggerTarget = v;
-    }
+    internal void SetTrigger(float v) => triggerTarget = v;
+
+    internal void SetMoving(bool v) => moving = v;
+
+    public void SetTeleportation(bool v) => teleporting = v;
+
 
     void AnimateHand()
     {

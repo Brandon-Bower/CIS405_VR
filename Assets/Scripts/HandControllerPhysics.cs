@@ -13,6 +13,8 @@ public class HandControllerPhysics : MonoBehaviour
     ActionBasedController controller;
     public HandPhysics hand;
     public InputActionReference touchAction;
+    public InputActionReference thumbStickActionL;
+    public InputActionReference thumbStickActionR;
 
     // Start is called before the first frame update
     void Start()
@@ -26,5 +28,6 @@ public class HandControllerPhysics : MonoBehaviour
         hand.SetGrip(controller.selectAction.action.ReadValue<float>());
         hand.SetTrigger(controller.activateAction.action.ReadValue<float>());
         hand.SetThumb(touchAction.action.ReadValue<float>());
+        hand.SetMoving(thumbStickActionL.action.triggered || thumbStickActionR.action.triggered);
     }
 }

@@ -170,6 +170,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ThumbStick",
+                    "type": "PassThrough",
+                    "id": "cc5ec262-1271-4fce-95f3-6d341621de56",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -491,6 +499,17 @@
                     "action": "Touch",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6485e5f-85f4-4af8-b0b8-b0a6f69559a1",
+                    "path": "<XRController>{LeftHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThumbStick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -607,6 +626,14 @@
                     "type": "Button",
                     "id": "f10c26bc-d23a-49f9-975b-98afdade4b42",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ThumbStick",
+                    "type": "PassThrough",
+                    "id": "66a49ad4-2f23-44b3-a767-4e64c0e35457",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 }
@@ -906,6 +933,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f4bdd9a-7622-435f-a61e-7eca801d8132",
+                    "path": "<XRController>{RightHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThumbStick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
