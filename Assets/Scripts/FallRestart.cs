@@ -7,7 +7,7 @@ public class FallRestart : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
