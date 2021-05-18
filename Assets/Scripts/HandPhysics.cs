@@ -93,6 +93,24 @@ public class HandPhysics : MonoBehaviour
 
     public void SetTeleportation(bool v) => teleporting = v;
 
+    public void ObjectGrabbed()
+    {
+        Debug.Log("grabbed");
+        GetComponent<BoxCollider>().enabled = false;
+    }
+
+    public void ObjectReleased()
+    {
+        Debug.Log("released");
+        Invoke(nameof(ResetCollider), .2f);
+    }
+
+    internal void ResetCollider()
+    {
+        Debug.Log("reset");
+        GetComponent<BoxCollider>().enabled = true;
+    }
+
 
     void AnimateHand()
     {
