@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 // Based on code from https://www.youtube.com/watch?v=DxKWq7z4Xao&list=WL&index=19&t=869s
 // and https://www.youtube.com/watch?v=RwGIyRy-Lss&list=WL&index=19&t=123s
@@ -27,6 +29,8 @@ public class HandPhysics : MonoBehaviour
     private bool moving = false;
     private bool stoppedMoving = false;
     private bool teleporting = false;
+
+    private int origLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -93,21 +97,20 @@ public class HandPhysics : MonoBehaviour
 
     public void SetTeleportation(bool v) => teleporting = v;
 
-    public void ObjectGrabbed()
+    internal void OnSelectEntered(SelectEnterEventArgs args)
     {
-        Debug.Log("grabbed");
         GetComponent<BoxCollider>().enabled = false;
+        origLayer = args.interactable.gameObject.layer;
+        args.interactable.gameObject.layer = LayerMask.NameToLayer("Player");
     }
-
-    public void ObjectReleased()
+    internal void OnSelectExited(SelectExitEventArgs args)
     {
-        Debug.Log("released");
         Invoke(nameof(ResetCollider), .2f);
+        args.interactable.gameObject.layer = origLayer;
     }
 
     internal void ResetCollider()
     {
-        Debug.Log("reset");
         GetComponent<BoxCollider>().enabled = true;
     }
 

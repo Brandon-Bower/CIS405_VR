@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 // and https://www.youtube.com/watch?v=RwGIyRy-Lss&list=WL&index=19&t=123s
 
 [RequireComponent(typeof(ActionBasedController))]
+[RequireComponent(typeof(XRRayInteractor))]
 public class HandControllerPhysics : MonoBehaviour
 {
     ActionBasedController controller;
@@ -15,6 +16,21 @@ public class HandControllerPhysics : MonoBehaviour
     public InputActionReference touchAction;
     public InputActionReference thumbStickActionL;
     public InputActionReference thumbStickActionR;
+
+    private XRRayInteractor _Interactor;
+
+    protected void OnEnable()
+    {
+        _Interactor = GetComponent<XRRayInteractor>();
+        _Interactor.selectEntered.AddListener(hand.OnSelectEntered);
+        _Interactor.selectExited.AddListener(hand.OnSelectExited);
+    }
+
+    protected void OnDisable()
+    {
+        _Interactor.selectEntered.RemoveListener(hand.OnSelectEntered);
+        _Interactor.selectExited.RemoveListener(hand.OnSelectExited);
+    }
 
     // Start is called before the first frame update
     void Start()
