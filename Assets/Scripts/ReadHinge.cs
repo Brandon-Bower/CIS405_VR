@@ -14,7 +14,6 @@ public class ReadHinge : MonoBehaviour
     void Update()
     {
         float t = (_joint.angle - _joint.limits.min) / (_joint.limits.max - _joint.limits.min);
-        Debug.Log(t);
         GetComponent<MeshRenderer>().material.SetColor("_Color", Color.Lerp(colorA, colorB, t));
 
     }
