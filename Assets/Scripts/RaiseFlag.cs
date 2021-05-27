@@ -10,7 +10,8 @@ public class RaiseFlag : MonoBehaviour
 
     [SerializeField] private HingeJoint _joint;
     [SerializeField] private  float rotationsNeeded;
-    
+    [SerializeField] private bool counterClockwise = false;
+
     private float lastAngle;
     private float goal;
     private float current;
@@ -58,6 +59,7 @@ public class RaiseFlag : MonoBehaviour
         }
         
         lastAngle = angle;
+        if (counterClockwise) distance *= -1;
         return distance;
     }
 }
