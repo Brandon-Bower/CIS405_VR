@@ -27,7 +27,6 @@ public class HandPhysics : MonoBehaviour
     private Transform _followTarget;
     private Rigidbody _body;
     private bool moving = false;
-    private bool stoppedMoving = false;
     private bool teleporting = false;
 
     private int origLayer;
@@ -55,21 +54,21 @@ public class HandPhysics : MonoBehaviour
     void Update()
     {
         AnimateHand();
-        if (stoppedMoving)
-        {
-            _body.isKinematic = false;
-            _body.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        }
 
-        if (!moving && !teleporting)
-            PhysicsMove();
-        else
+        if (moving || teleporting)
         {
+            // Lock hands so they don't float/fly around when player moves or teleports
             _body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             _body.isKinematic = true;
             gameObject.transform.position = _followTarget.position;
             gameObject.transform.rotation = _followTarget.rotation;
-            stoppedMoving = true;
+        }
+        else
+        {
+            // Have hands interact with environment when player is not moving
+            _body.isKinematic = false;
+            _body.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            PhysicsMove();
         }
     }
 
@@ -87,11 +86,11 @@ public class HandPhysics : MonoBehaviour
         _body.angularVelocity = angle * axis * Mathf.Deg2Rad * rotateSpeed;
     }
 
-    internal void SetThumb(float v) => thumbTarget = v;
+    internal void SetThumb(float v) => thumbTarget = v; // Thumb animation driver value
 
-    internal void SetGrip(float v) => gripTarget = v;
+    internal void SetGrip(float v) => gripTarget = v; // Grip animation driver value
 
-    internal void SetTrigger(float v) => triggerTarget = v;
+    internal void SetTrigger(float v) => triggerTarget = v; // Index finger animation driver value
 
     internal void SetMoving(bool v) => moving = v;
 
@@ -99,13 +98,15 @@ public class HandPhysics : MonoBehaviour
 
     internal void OnSelectEntered(SelectEnterEventArgs args)
     {
+        // Make it so held objects do not collide with the player
         GetComponent<BoxCollider>().enabled = false;
         origLayer = args.interactable.gameObject.layer;
         args.interactable.gameObject.layer = LayerMask.NameToLayer("Player");
     }
     internal void OnSelectExited(SelectExitEventArgs args)
     {
-        Invoke(nameof(ResetCollider), .2f);
+        // Return objects to original layer when released
+        Invoke(nameof(ResetCollider), .2f); // Give a little bit of time before turning the collider back on
         args.interactable.gameObject.layer = origLayer;
     }
 
@@ -117,24 +118,24 @@ public class HandPhysics : MonoBehaviour
 
     void AnimateHand()
     {
-        if(gripCurrent != gripTarget)
+        if(gripCurrent != gripTarget) // Update grip animation
         {
             gripCurrent = Mathf.MoveTowards(gripCurrent, gripTarget, Time.deltaTime * speed);
             animator.SetFloat(animatorGripParam, gripCurrent);
         }        
-        if(triggerCurrent != triggerTarget)
+        if(triggerCurrent != triggerTarget) // Update index animation
         {
             triggerCurrent = Mathf.MoveTowards(triggerCurrent, triggerTarget, Time.deltaTime * speed);
             animator.SetFloat(animatorTriggerParam, triggerCurrent);
         }
-        if (thumbCurrent != thumbTarget)
+        if (thumbCurrent != thumbTarget) // Update thumb animation
         {
             thumbCurrent = Mathf.MoveTowards(thumbCurrent, thumbTarget, Time.deltaTime * speed);
             animator.SetFloat(animatorThumbParam, thumbCurrent);
         }
     }
 
-    public void ToggleVisibility()
+    public void ToggleVisibility() // Hide hands when something is held
     {
         mesh.enabled = !mesh.enabled;
     }
